@@ -2,6 +2,7 @@ package dao;
 
 import dbconnect.DBConnect;
 import model.Lesson;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,26 +27,22 @@ public class LessonDAO {
             pstmt.setLong(5, lesson.getCreatedBy());
             pstmt.setLong(6, lesson.getUpdatedBy());
             pstmt.setString(7, lesson.getContent());
-            pstmt.setLong(8, lesson.getLessonId());
+            pstmt.setString(8, lesson.getLessonId());
             pstmt.setTime(9, lesson.getTimeLesson());
 
             pstmt.executeUpdate();
 
-            // Retrieve the generated ID
-            ResultSet generatedKeys = pstmt.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                lesson.setId(generatedKeys.getLong(1));
-            }
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     // Retrieve a record by ID
-    public Lesson getLessonById(long id) {
+    public Lesson getLessonById(String id) {
         String sql = "SELECT * FROM tblLessons WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 return mapResultSetToLesson(rs);
@@ -82,9 +79,9 @@ public class LessonDAO {
             pstmt.setLong(5, lesson.getCreatedBy());
             pstmt.setLong(6, lesson.getUpdatedBy());
             pstmt.setString(7, lesson.getContent());
-            pstmt.setLong(8, lesson.getLessonId());
+            pstmt.setString(8, lesson.getLessonId());
             pstmt.setTime(9, lesson.getTimeLesson());
-            pstmt.setLong(10, lesson.getId());
+            pstmt.setString(10, lesson.getId());
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -93,10 +90,10 @@ public class LessonDAO {
     }
 
     // Delete a record by ID
-    public void deleteLesson(long id) {
+    public void deleteLesson(String id) {
         String sql = "DELETE FROM tblLessons WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -105,7 +102,7 @@ public class LessonDAO {
 
     // Map ResultSet to Lesson object
     private Lesson mapResultSetToLesson(ResultSet rs) throws SQLException {
-        long id = rs.getLong("id");
+        String id = rs.getString("id");
         String nameLesson = rs.getString("nameLesson");
         long courseId = rs.getLong("courseId");
         Timestamp createdDate = rs.getTimestamp("createdDate");
@@ -113,7 +110,7 @@ public class LessonDAO {
         long createdBy = rs.getLong("createdBy");
         long updatedBy = rs.getLong("updatedBy");
         String content = rs.getString("content");
-        long lessonId = rs.getLong("lessonId");
+        String lessonId = rs.getString("lessonId");
         java.sql.Time timeLesson = rs.getTime("timeLesson");
 
         return new Lesson(id, nameLesson, courseId, createdDate, updatedDate, createdBy, updatedBy, content, lessonId, timeLesson);

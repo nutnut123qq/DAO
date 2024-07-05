@@ -4,13 +4,13 @@ import java.util.Objects;
 
 public class DetailInvoice implements Comparable<DetailInvoice> {
 
-    private long id;
+    private String id;
     private long invoiceId;
     private long courseId;
     private int quantityPurchased;
 
     // Constructor
-    public DetailInvoice(long id, long invoiceId, long courseId, int quantityPurchased) {
+    public DetailInvoice(String id, long invoiceId, long courseId, int quantityPurchased) {
         this.id = id;
         this.invoiceId = invoiceId;
         this.courseId = courseId;
@@ -18,11 +18,11 @@ public class DetailInvoice implements Comparable<DetailInvoice> {
     }
 
     // Getters and Setters
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -50,15 +50,13 @@ public class DetailInvoice implements Comparable<DetailInvoice> {
         this.quantityPurchased = quantityPurchased;
     }
 
-    
-
     // equals method
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DetailInvoice that = (DetailInvoice) o;
-        return id == that.id &&
+        return Objects.equals(id, that.id) &&
                 invoiceId == that.invoiceId &&
                 courseId == that.courseId &&
                 quantityPurchased == that.quantityPurchased;
@@ -74,6 +72,6 @@ public class DetailInvoice implements Comparable<DetailInvoice> {
     @Override
     public int compareTo(DetailInvoice other) {
         // Compare by id
-        return Long.compare(this.id, other.id);
+        return this.id.compareTo(other.id);
     }
 }

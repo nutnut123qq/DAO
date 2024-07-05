@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class UserInfor implements Comparable<UserInfor> {
 
-    private long id;
+    private String id;
     private String phone;
     private String address;
     private String fullName;
@@ -19,7 +19,7 @@ public class UserInfor implements Comparable<UserInfor> {
     private long updatedBy;
 
     // Constructors
-    public UserInfor(long id, String phone, String address, String fullName, Timestamp birthDay, boolean sex, String avatar, long userId, Timestamp createdDate, Timestamp updatedDate, long createdBy, long updatedBy) {
+    public UserInfor(String id, String phone, String address, String fullName, Timestamp birthDay, boolean sex, String avatar, long userId, Timestamp createdDate, Timestamp updatedDate, long createdBy, long updatedBy) {
         this.id = id;
         this.phone = phone;
         this.address = address;
@@ -35,11 +35,11 @@ public class UserInfor implements Comparable<UserInfor> {
     }
 
     // Getters and Setters
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -137,18 +137,18 @@ public class UserInfor implements Comparable<UserInfor> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserInfor userInfor = (UserInfor) o;
-        return id == userInfor.id &&
-                sex == userInfor.sex &&
-                userId == userInfor.userId &&
-                createdBy == userInfor.createdBy &&
-                updatedBy == userInfor.updatedBy &&
+        return Objects.equals(id, userInfor.id) &&
                 Objects.equals(phone, userInfor.phone) &&
                 Objects.equals(address, userInfor.address) &&
                 Objects.equals(fullName, userInfor.fullName) &&
                 Objects.equals(birthDay, userInfor.birthDay) &&
+                sex == userInfor.sex &&
                 Objects.equals(avatar, userInfor.avatar) &&
+                userId == userInfor.userId &&
                 Objects.equals(createdDate, userInfor.createdDate) &&
-                Objects.equals(updatedDate, userInfor.updatedDate);
+                Objects.equals(updatedDate, userInfor.updatedDate) &&
+                createdBy == userInfor.createdBy &&
+                updatedBy == userInfor.updatedBy;
     }
 
     // hashCode method

@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class User implements Comparable<User> {
 
-    private long id;
+    private String id;
     private String username;
     private String email;
     private String password;
@@ -18,7 +18,7 @@ public class User implements Comparable<User> {
     private String img; // New property for image link
 
     // Constructors
-    public User(long id, String username, String email, String password, String role, String status, Timestamp createdDate, Timestamp updatedDate, String createdBy, String updatedBy, String img) {
+    public User(String id, String username, String email, String password, String role, String status, Timestamp createdDate, Timestamp updatedDate, String createdBy, String updatedBy, String img) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -33,11 +33,11 @@ public class User implements Comparable<User> {
     }
 
     // Getters and Setters
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -127,7 +127,7 @@ public class User implements Comparable<User> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id &&
+        return Objects.equals(id, user.id) &&
                 Objects.equals(username, user.username) &&
                 Objects.equals(email, user.email) &&
                 Objects.equals(password, user.password) &&

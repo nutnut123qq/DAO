@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Cart implements Comparable<Cart> {
 
-    private long id;
+    private String id;
     private long idUser;
     private long idCourse;
     private Timestamp addedAt;
@@ -15,7 +15,7 @@ public class Cart implements Comparable<Cart> {
     private long createdBy;
 
     // Constructor
-    public Cart(long id, long idUser, long idCourse, Timestamp addedAt, long updatedBy, Timestamp updatedDate, Timestamp createdDate, long createdBy) {
+    public Cart(String id, long idUser, long idCourse, Timestamp addedAt, long updatedBy, Timestamp updatedDate, Timestamp createdDate, long createdBy) {
         this.id = id;
         this.idUser = idUser;
         this.idCourse = idCourse;
@@ -27,11 +27,11 @@ public class Cart implements Comparable<Cart> {
     }
 
     // Getters and Setters
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -90,8 +90,8 @@ public class Cart implements Comparable<Cart> {
     public void setCreatedBy(long createdBy) {
         this.createdBy = createdBy;
     }
-    // equals method
 
+    // equals method
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -101,11 +101,11 @@ public class Cart implements Comparable<Cart> {
             return false;
         }
         Cart cart = (Cart) o;
-        return id == cart.id
-                && idUser == cart.idUser
+        return idUser == cart.idUser
                 && idCourse == cart.idCourse
                 && updatedBy == cart.updatedBy
                 && createdBy == cart.createdBy
+                && Objects.equals(id, cart.id)
                 && Objects.equals(addedAt, cart.addedAt)
                 && Objects.equals(updatedDate, cart.updatedDate)
                 && Objects.equals(createdDate, cart.createdDate);

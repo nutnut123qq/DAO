@@ -34,10 +34,10 @@ public class RatingDAO {
     }
 
     // Retrieve a record by ID
-    public Rating getRatingById(long id) {
+    public Rating getRatingById(String id) {
         String sql = "SELECT * FROM tblRating WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 return mapResultSetToRating(rs);
@@ -75,7 +75,7 @@ public class RatingDAO {
             pstmt.setTimestamp(6, rating.getRatedAt());
             pstmt.setLong(7, rating.getIdCourse());
             pstmt.setByte(8, rating.getNumberStar());
-            pstmt.setLong(9, rating.getId());
+            pstmt.setString(9, rating.getId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -83,10 +83,10 @@ public class RatingDAO {
     }
 
     // Delete a record by ID
-    public void deleteRating(long id) {
+    public void deleteRating(String id) {
         String sql = "DELETE FROM tblRating WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -95,7 +95,7 @@ public class RatingDAO {
 
     // Map ResultSet to Rating object
     private Rating mapResultSetToRating(ResultSet rs) throws SQLException {
-        long id = rs.getLong("id");
+        String id = rs.getString("id");
         String comment = rs.getString("comment");
         String website = rs.getString("website");
         long updatedBy = rs.getLong("updatedBy");

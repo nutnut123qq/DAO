@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Ad implements Comparable<Ad> {
 
-    private long id;
+    private String id;
     private String img;
     private String description;
     private String link;
@@ -19,7 +19,7 @@ public class Ad implements Comparable<Ad> {
     private float height;
 
     // Constructor
-    public Ad(long id, String img, String description, String link, int position, String status, Timestamp createdDate, Timestamp updatedDate, long createdBy, long updateBy, float width, float height) {
+    public Ad(String id, String img, String description, String link, int position, String status, Timestamp createdDate, Timestamp updatedDate, long createdBy, long updateBy, float width, float height) {
         this.id = id;
         this.img = img;
         this.description = description;
@@ -35,11 +35,11 @@ public class Ad implements Comparable<Ad> {
     }
 
     // Getters and Setters
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -141,7 +141,7 @@ public class Ad implements Comparable<Ad> {
             return false;
         }
         Ad ad = (Ad) o;
-        return id == ad.id
+        return Objects.equals(id, ad.id)
                 && position == ad.position
                 && createdBy == ad.createdBy
                 && updateBy == ad.updateBy
@@ -165,7 +165,7 @@ public class Ad implements Comparable<Ad> {
     @Override
     public int compareTo(Ad o) {
         // Compare by id
-        return Long.compare(this.id, o.id);
+        return this.id.compareTo(o.id);
     }
 
 }

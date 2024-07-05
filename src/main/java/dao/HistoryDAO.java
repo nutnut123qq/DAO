@@ -1,7 +1,8 @@
 package dao;
 
-import model.History;
 import dbconnect.DBConnect;
+import model.History;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ public class HistoryDAO {
     // Create a new record in the database
     public void createHistory(History history) {
         String sql = "INSERT INTO tblHistory (ipAddress, updatedDate, createdDate, type, mappingId) VALUES (?, ?, ?, ?, ?)";
-        try ( PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, history.getIpAddress());
             pstmt.setTimestamp(2, history.getUpdatedDate());
             pstmt.setTimestamp(3, history.getCreatedDate());
@@ -32,10 +33,10 @@ public class HistoryDAO {
     }
 
     // Retrieve a record by ID
-    public History getHistoryById(long id) {
+    public History getHistoryById(String id) {
         String sql = "SELECT * FROM tblHistory WHERE id = ?";
-        try ( PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, id);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 return mapResultSetToTblHistory(rs);
@@ -50,7 +51,8 @@ public class HistoryDAO {
     public List<History> getAllHistories() {
         List<History> histories = new ArrayList<>();
         String sql = "SELECT * FROM tblHistory";
-        try ( Statement stmt = connection.createStatement();  ResultSet rs = stmt.executeQuery(sql)) {
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 histories.add(mapResultSetToTblHistory(rs));
             }
@@ -63,13 +65,13 @@ public class HistoryDAO {
     // Update a record
     public void updateHistory(History history) {
         String sql = "UPDATE tblHistory SET ipAddress = ?, updatedDate = ?, createdDate = ?, type = ?, mappingId = ? WHERE id = ?";
-        try ( PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, history.getIpAddress());
             pstmt.setTimestamp(2, history.getUpdatedDate());
             pstmt.setTimestamp(3, history.getCreatedDate());
             pstmt.setString(4, history.getType());
             pstmt.setInt(5, history.getMappingId());
-            pstmt.setLong(6, history.getId());
+            pstmt.setString(6, history.getId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -77,10 +79,10 @@ public class HistoryDAO {
     }
 
     // Delete a record by ID
-    public void deleteHistory(long id) {
+    public void deleteHistory(String id) {
         String sql = "DELETE FROM tblHistory WHERE id = ?";
-        try ( PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, id);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -89,7 +91,7 @@ public class HistoryDAO {
 
     // Map ResultSet to TblHistory object
     private History mapResultSetToTblHistory(ResultSet rs) throws SQLException {
-        long id = rs.getLong("id");
+        String id = rs.getString("id");
         String ipAddress = rs.getString("ipAddress");
         Timestamp updatedDate = rs.getTimestamp("updatedDate");
         Timestamp createdDate = rs.getTimestamp("createdDate");
@@ -106,6 +108,7 @@ public class HistoryDAO {
                 System.out.println("Connection closed successfully.");
             }
         } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

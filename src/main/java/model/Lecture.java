@@ -1,11 +1,10 @@
 package model;
 
-import java.sql.Timestamp;
 import java.util.Objects;
 
 public class Lecture implements Comparable<Lecture> {
 
-    private long id;
+    private String id; // Chuyển từ long sang String
     private String name;
     private String email;
     private String address;
@@ -13,7 +12,7 @@ public class Lecture implements Comparable<Lecture> {
     private String subject;
 
     // Constructors
-    public Lecture(long id, String name, String email, String address, String description, String subject) {
+    public Lecture(String id, String name, String email, String address, String description, String subject) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -23,11 +22,11 @@ public class Lecture implements Comparable<Lecture> {
     }
 
     // Getters and Setters
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -77,7 +76,7 @@ public class Lecture implements Comparable<Lecture> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Lecture lecture = (Lecture) o;
-        return id == lecture.id &&
+        return Objects.equals(id, lecture.id) &&
                 Objects.equals(name, lecture.name) &&
                 Objects.equals(email, lecture.email) &&
                 Objects.equals(address, lecture.address) &&

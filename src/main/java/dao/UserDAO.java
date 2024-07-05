@@ -33,21 +33,16 @@ public class UserDAO {
 
             pstmt.executeUpdate();
 
-            // Retrieve the generated ID
-            ResultSet generatedKeys = pstmt.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                user.setId(generatedKeys.getLong(1));
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     // Retrieve a record by ID
-    public User getUserById(long id) {
+    public User getUserById(String id) {
         String sql = "SELECT * FROM tblUsers WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 return mapResultSetToUser(rs);
@@ -87,7 +82,8 @@ public class UserDAO {
             pstmt.setString(8, user.getCreatedBy());
             pstmt.setString(9, user.getUpdatedBy());
             pstmt.setString(10, user.getImg());
-            pstmt.setLong(11, user.getId());
+            // Assuming id in User class is now String
+            pstmt.setString(11, user.getId());
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -96,10 +92,10 @@ public class UserDAO {
     }
 
     // Delete a record by ID
-    public void deleteUser(long id) {
+    public void deleteUser(String id) {
         String sql = "DELETE FROM tblUsers WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -108,7 +104,7 @@ public class UserDAO {
 
     // Map ResultSet to User object
     private User mapResultSetToUser(ResultSet rs) throws SQLException {
-        long id = rs.getLong("id");
+        String id = rs.getString("id");
         String username = rs.getString("username");
         String email = rs.getString("email");
         String password = rs.getString("password");

@@ -1,7 +1,8 @@
 package dao;
 
-import model.Messages;
 import dbconnect.DBConnect;
+import model.Messages;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +35,10 @@ public class MessagesDAO {
     }
 
     // Retrieve a record by ID
-    public Messages getMessageById(long id) {
+    public Messages getMessageById(String id) {
         String sql = "SELECT * FROM tblMessages WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 return mapResultSetToMessage(rs);
@@ -75,7 +76,7 @@ public class MessagesDAO {
             pstmt.setTimestamp(6, message.getCreatedDate());
             pstmt.setLong(7, message.getCreatedBy());
             pstmt.setString(8, message.getMessage());
-            pstmt.setLong(9, message.getId());
+            pstmt.setString(9, message.getId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -83,10 +84,10 @@ public class MessagesDAO {
     }
 
     // Delete a record by ID
-    public void deleteMessage(long id) {
+    public void deleteMessage(String id) {
         String sql = "DELETE FROM tblMessages WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -95,7 +96,7 @@ public class MessagesDAO {
 
     // Map ResultSet to Message object
     private Messages mapResultSetToMessage(ResultSet rs) throws SQLException {
-        long id = rs.getLong("id");
+        String id = rs.getString("id");
         String subject = rs.getString("subject");
         String email = rs.getString("email");
         String description = rs.getString("description");

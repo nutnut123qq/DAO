@@ -18,7 +18,7 @@ public class AdDAO {
     // Create a new record in the database
     public void createAd(Ad ad) {
         String sql = "INSERT INTO tblAds (img, description, link, position, status, createdDate, updatedDate, createdBy, updateBy, width, height) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, ad.getImg());
             pstmt.setString(2, ad.getDescription());
             pstmt.setString(3, ad.getLink());
@@ -31,16 +31,22 @@ public class AdDAO {
             pstmt.setFloat(10, ad.getWidth());
             pstmt.setFloat(11, ad.getHeight());
             pstmt.executeUpdate();
+
+            // Retrieve the generated ID
+            ResultSet generatedKeys = pstmt.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                ad.setId(generatedKeys.getString(1));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     // Retrieve a record by ID
-    public Ad getAdById(long id) {
+    public Ad getAdById(String id) {
         String sql = "SELECT * FROM tblAds WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 return mapResultSetToAd(rs);
@@ -81,7 +87,7 @@ public class AdDAO {
             pstmt.setLong(9, ad.getUpdateBy());
             pstmt.setFloat(10, ad.getWidth());
             pstmt.setFloat(11, ad.getHeight());
-            pstmt.setLong(12, ad.getId());
+            pstmt.setString(12, ad.getId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -89,10 +95,10 @@ public class AdDAO {
     }
 
     // Delete a record by ID
-    public void deleteAd(long id) {
+    public void deleteAd(String id) {
         String sql = "DELETE FROM tblAds WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -101,7 +107,7 @@ public class AdDAO {
 
     // Map ResultSet to Ad object
     private Ad mapResultSetToAd(ResultSet rs) throws SQLException {
-        long id = rs.getLong("id");
+        String id = rs.getString("id");
         String img = rs.getString("img");
         String description = rs.getString("description");
         String link = rs.getString("link");

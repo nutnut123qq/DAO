@@ -38,7 +38,7 @@ public class CourseDAO {
             // Retrieve the generated ID
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                course.setId(generatedKeys.getLong(1));
+                course.setId(String.valueOf(generatedKeys.getLong(1)));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -46,10 +46,10 @@ public class CourseDAO {
     }
 
     // Retrieve a course record by ID
-    public Course getCourseById(long id) {
+    public Course getCourseById(String id) {
         String sql = "SELECT * FROM tblCourse WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 return mapResultSetToCourse(rs);
@@ -92,7 +92,7 @@ public class CourseDAO {
             pstmt.setString(10, course.getUpdatedBy());
             pstmt.setString(11, course.getIdCategory());
             pstmt.setString(12, course.getImg());
-            pstmt.setLong(13, course.getId());
+            pstmt.setString(13, course.getId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -100,10 +100,10 @@ public class CourseDAO {
     }
 
     // Delete a course record by ID
-    public void deleteCourse(long id) {
+    public void deleteCourse(String id) {
         String sql = "DELETE FROM tblCourse WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -112,7 +112,7 @@ public class CourseDAO {
 
     // Map ResultSet to Course object
     private Course mapResultSetToCourse(ResultSet rs) throws SQLException {
-        long id = rs.getLong("id");
+        String id = rs.getString("id");
         String name = rs.getString("name");
         int rate = rs.getInt("rate");
         float price = rs.getFloat("price");

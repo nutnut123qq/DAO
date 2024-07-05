@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Course implements Comparable<Course> {
 
-    private long id;
+    private String id; // Changed from long to String
     private String name;
     private int rate;
     private float price;
@@ -20,7 +20,7 @@ public class Course implements Comparable<Course> {
     private String img; // New property for image link
 
     // Constructors
-    public Course(long id, String name, int rate, float price, String lectureId, Timestamp timeCourse, String description, Timestamp createdDate, Timestamp updatedDate, String createdBy, String updatedBy, String idCategory, String img) {
+    public Course(String id, String name, int rate, float price, String lectureId, Timestamp timeCourse, String description, Timestamp createdDate, Timestamp updatedDate, String createdBy, String updatedBy, String idCategory, String img) {
         this.id = id;
         this.name = name;
         this.rate = rate;
@@ -37,11 +37,11 @@ public class Course implements Comparable<Course> {
     }
 
     // Getters and Setters
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -147,7 +147,7 @@ public class Course implements Comparable<Course> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Course course = (Course) o;
-        return id == course.id &&
+        return Objects.equals(id, course.id) &&
                 rate == course.rate &&
                 Float.compare(course.price, price) == 0 &&
                 Objects.equals(name, course.name) &&

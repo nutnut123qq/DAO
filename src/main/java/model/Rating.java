@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Rating implements Comparable<Rating> {
 
-    private long id;
+    private String id;
     private String comment;
     private String website;
     private long updatedBy;
@@ -16,7 +16,7 @@ public class Rating implements Comparable<Rating> {
     private byte numberStar;
 
     // Constructor
-    public Rating(long id, String comment, String website, long updatedBy, Timestamp updatedDate, long ratedBy, Timestamp ratedAt, long idCourse, byte numberStar) {
+    public Rating(String id, String comment, String website, long updatedBy, Timestamp updatedDate, long ratedBy, Timestamp ratedAt, long idCourse, byte numberStar) {
         this.id = id;
         this.comment = comment;
         this.website = website;
@@ -29,11 +29,11 @@ public class Rating implements Comparable<Rating> {
     }
 
     // Getters and Setters
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -101,21 +101,21 @@ public class Rating implements Comparable<Rating> {
         this.numberStar = numberStar;
     }
     
-     // equals method
+    // equals method
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Rating rating = (Rating) o;
-        return id == rating.id &&
-                updatedBy == rating.updatedBy &&
-                ratedBy == rating.ratedBy &&
-                idCourse == rating.idCourse &&
-                numberStar == rating.numberStar &&
+        return Objects.equals(id, rating.id) &&
                 Objects.equals(comment, rating.comment) &&
                 Objects.equals(website, rating.website) &&
+                updatedBy == rating.updatedBy &&
                 Objects.equals(updatedDate, rating.updatedDate) &&
-                Objects.equals(ratedAt, rating.ratedAt);
+                ratedBy == rating.ratedBy &&
+                Objects.equals(ratedAt, rating.ratedAt) &&
+                idCourse == rating.idCourse &&
+                numberStar == rating.numberStar;
     }
 
     // hashCode method

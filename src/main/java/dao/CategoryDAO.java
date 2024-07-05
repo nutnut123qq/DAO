@@ -2,6 +2,7 @@ package dao;
 
 import dbconnect.DBConnect;
 import model.Category;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +35,10 @@ public class CategoryDAO {
     }
 
     // Retrieve a record by ID
-    public Category getCategoryById(long id) {
+    public Category getCategoryById(String id) {
         String sql = "SELECT * FROM tblCategory WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 return mapResultSetToCategory(rs);
@@ -75,7 +76,7 @@ public class CategoryDAO {
             pstmt.setLong(6, category.getCreatedBy());
             pstmt.setString(7, category.getStatus());
             pstmt.setLong(8, category.getIdCourse());
-            pstmt.setLong(9, category.getId());
+            pstmt.setString(9, category.getId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -83,10 +84,10 @@ public class CategoryDAO {
     }
 
     // Delete a record by ID
-    public void deleteCategory(long id) {
+    public void deleteCategory(String id) {
         String sql = "DELETE FROM tblCategory WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -95,7 +96,7 @@ public class CategoryDAO {
 
     // Map ResultSet to Category object
     private Category mapResultSetToCategory(ResultSet rs) throws SQLException {
-        long id = rs.getLong("id");
+        String id = rs.getString("id");
         String name = rs.getString("name");
         String description = rs.getString("description");
         long updatedBy = rs.getLong("updatedBy");

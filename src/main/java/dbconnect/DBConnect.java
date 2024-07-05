@@ -3,16 +3,32 @@ package dbconnect;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.io.InputStream;
+import java.util.Properties;
 
 public class DBConnect {
     private Connection connection;
 
     public DBConnect() {
-        try {
-            String url = "jdbc:sqlserver://localhost:1433;databaseName=PRJ;encrypt=true;trustServerCertificate=true";
-            String username = "sa";
-            String password = "123";
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        Properties properties = new Properties();
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream("db.properties")) {
+            if (input == null) {
+                System.out.println("Sorry, unable to find db.properties");
+                return;
+            }
+
+            // Load the properties file
+            properties.load(input);
+
+            String url = properties.getProperty("db.url");
+            String username = properties.getProperty("db.username");
+            String password = properties.getProperty("db.password");
+            String driver = properties.getProperty("db.driver");
+
+            // Load the JDBC driver
+            Class.forName(driver);
+
+            // Establish the connection
             connection = DriverManager.getConnection(url, username, password);
             if (connection != null) {
                 System.out.println("Connection established successfully.");
@@ -44,4 +60,3 @@ public class DBConnect {
         }
     }
 }
-

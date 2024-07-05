@@ -5,13 +5,13 @@ import java.util.Objects;
 
 public class Invoice implements Comparable<Invoice> {
 
-    private long id;
+    private String id; // Thay đổi từ long sang String
     private Timestamp purchDate;
     private long userId;
     private boolean orderStatus;
 
     // Constructors
-    public Invoice(long id, Timestamp purchDate, long userId, boolean orderStatus) {
+    public Invoice(String id, Timestamp purchDate, long userId, boolean orderStatus) {
         this.id = id;
         this.purchDate = purchDate;
         this.userId = userId;
@@ -19,11 +19,11 @@ public class Invoice implements Comparable<Invoice> {
     }
 
     // Getters and Setters
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -57,10 +57,10 @@ public class Invoice implements Comparable<Invoice> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Invoice invoice = (Invoice) o;
-        return id == invoice.id &&
-                userId == invoice.userId &&
-                orderStatus == invoice.orderStatus &&
-                Objects.equals(purchDate, invoice.purchDate);
+        return Objects.equals(id, invoice.id) &&
+               userId == invoice.userId &&
+               orderStatus == invoice.orderStatus &&
+               Objects.equals(purchDate, invoice.purchDate);
     }
 
     // hashCode method

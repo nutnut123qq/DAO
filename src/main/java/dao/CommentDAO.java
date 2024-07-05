@@ -39,10 +39,10 @@ public class CommentDAO {
     }
 
     // Retrieve a record by ID
-    public Comment getCommentById(long id) {
+    public Comment getCommentById(String id) {
         String sql = "SELECT * FROM tblComments WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 return mapResultSetToComment(rs);
@@ -84,7 +84,7 @@ public class CommentDAO {
             pstmt.setLong(10, comment.getCreatedBy());
             pstmt.setLong(11, comment.getUpdatedBy());
             pstmt.setLong(12, comment.getCourseId());
-            pstmt.setLong(13, comment.getId());
+            pstmt.setString(13, comment.getId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -92,10 +92,10 @@ public class CommentDAO {
     }
 
     // Delete a record by ID
-    public void deleteComment(long id) {
+    public void deleteComment(String id) {
         String sql = "DELETE FROM tblComments WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -104,7 +104,7 @@ public class CommentDAO {
 
     // Map ResultSet to Comment object
     private Comment mapResultSetToComment(ResultSet rs) throws SQLException {
-        long id = rs.getLong("id");
+        String id = rs.getString("id");
         String name = rs.getString("name");
         String email = rs.getString("email");
         long commentId = rs.getLong("commentId");

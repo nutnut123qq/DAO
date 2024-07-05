@@ -33,10 +33,10 @@ public class CartDAO {
     }
 
     // Retrieve a record by ID
-    public Cart getCartById(long id) {
+    public Cart getCartById(String id) {
         String sql = "SELECT * FROM tblCart WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 return mapResultSetToCart(rs);
@@ -73,7 +73,7 @@ public class CartDAO {
             pstmt.setTimestamp(5, cart.getUpdatedDate());
             pstmt.setTimestamp(6, cart.getCreatedDate());
             pstmt.setLong(7, cart.getCreatedBy());
-            pstmt.setLong(8, cart.getId());
+            pstmt.setString(8, cart.getId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -81,10 +81,10 @@ public class CartDAO {
     }
 
     // Delete a record by ID
-    public void deleteCart(long id) {
+    public void deleteCart(String id) {
         String sql = "DELETE FROM tblCart WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -93,7 +93,7 @@ public class CartDAO {
 
     // Map ResultSet to Cart object
     private Cart mapResultSetToCart(ResultSet rs) throws SQLException {
-        long id = rs.getLong("id");
+        String id = rs.getString("id");
         long idUser = rs.getLong("id_user");
         long idCourse = rs.getLong("id_course");
         Timestamp addedAt = rs.getTimestamp("addedAt");

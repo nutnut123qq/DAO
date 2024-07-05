@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Comment implements Comparable<Comment> {
 
-    private long id;
+    private String id; // Changed from long to String
     private String name;
     private String email;
     private long commentId; // Foreign key referencing itself
@@ -20,7 +20,7 @@ public class Comment implements Comparable<Comment> {
     private long courseId; // Foreign key referencing tblCourse(id)
 
     // Constructor
-    public Comment(long id, String name, String email, long commentId, String status, int quantity, String website, String message, Timestamp createdDate, Timestamp updatedDate, long createdBy, long updatedBy, long courseId) {
+    public Comment(String id, String name, String email, long commentId, String status, int quantity, String website, String message, Timestamp createdDate, Timestamp updatedDate, long createdBy, long updatedBy, long courseId) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -37,11 +37,11 @@ public class Comment implements Comparable<Comment> {
     }
 
     // Getters and Setters
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -147,7 +147,7 @@ public class Comment implements Comparable<Comment> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Comment comment = (Comment) o;
-        return id == comment.id &&
+        return Objects.equals(id, comment.id) &&
                 commentId == comment.commentId &&
                 quantity == comment.quantity &&
                 createdBy == comment.createdBy &&
@@ -172,6 +172,6 @@ public class Comment implements Comparable<Comment> {
     @Override
     public int compareTo(Comment o) {
         // Compare by id
-        return Long.compare(this.id, o.id);
+        return this.id.compareTo(o.id);
     }
 }

@@ -33,22 +33,16 @@ public class UserInforDAO {
             pstmt.setLong(11, userInfor.getUpdatedBy());
 
             pstmt.executeUpdate();
-
-            // Retrieve the generated ID
-            ResultSet generatedKeys = pstmt.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                userInfor.setId(generatedKeys.getLong(1));
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     // Retrieve a record by ID
-    public UserInfor getUserInforById(long id) {
+    public UserInfor getUserInforById(String id) {
         String sql = "SELECT * FROM tblUserInfor WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 return mapResultSetToUserInfor(rs);
@@ -89,7 +83,7 @@ public class UserInforDAO {
             pstmt.setTimestamp(9, userInfor.getUpdatedDate());
             pstmt.setLong(10, userInfor.getCreatedBy());
             pstmt.setLong(11, userInfor.getUpdatedBy());
-            pstmt.setLong(12, userInfor.getId());
+            pstmt.setString(12, userInfor.getId());
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -98,10 +92,10 @@ public class UserInforDAO {
     }
 
     // Delete a record by ID
-    public void deleteUserInfor(long id) {
+    public void deleteUserInfor(String id) {
         String sql = "DELETE FROM tblUserInfor WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -110,7 +104,7 @@ public class UserInforDAO {
 
     // Map ResultSet to UserInfor object
     private UserInfor mapResultSetToUserInfor(ResultSet rs) throws SQLException {
-        long id = rs.getLong("id");
+        String id = rs.getString("id");
         String phone = rs.getString("phone");
         String address = rs.getString("address");
         String fullName = rs.getString("fullName");

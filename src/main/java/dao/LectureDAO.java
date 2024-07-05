@@ -16,26 +16,32 @@ public class LectureDAO {
         this.connection = dbConnect.getConnection(); // Get the connection from DBConnect
     }
 
-    // Create a new record in the database
-    public void createLecture(Lecture lecture) {
-        String sql = "INSERT INTO tblLectures (name, email, address, description, subject) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setString(1, lecture.getName());
-            pstmt.setString(2, lecture.getEmail());
-            pstmt.setString(3, lecture.getAddress());
-            pstmt.setString(4, lecture.getDescription());
-            pstmt.setString(5, lecture.getSubject());
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+   public void createLecture(Lecture lecture) {
+    String sql = "INSERT INTO tblLectures (name, email, address, description, subject) VALUES (?, ?, ?, ?, ?)";
+    try (PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        pstmt.setString(1, lecture.getName());
+        pstmt.setString(2, lecture.getEmail());
+        pstmt.setString(3, lecture.getAddress());
+        pstmt.setString(4, lecture.getDescription());
+        pstmt.setString(5, lecture.getSubject());
+        pstmt.executeUpdate();
+
+        // Retrieve the generated keys and set ID directly on Lecture object
+        ResultSet generatedKeys = pstmt.getGeneratedKeys();
+        if (generatedKeys.next()) {
+            lecture.setId(String.valueOf(generatedKeys.getLong(1)));
         }
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+}
+
 
     // Retrieve a record by ID
-    public Lecture getLectureById(long id) {
+    public Lecture getLectureById(String id) {
         String sql = "SELECT * FROM tblLectures WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 return mapResultSetToLecture(rs);
@@ -70,7 +76,7 @@ public class LectureDAO {
             pstmt.setString(3, lecture.getAddress());
             pstmt.setString(4, lecture.getDescription());
             pstmt.setString(5, lecture.getSubject());
-            pstmt.setLong(6, lecture.getId());
+            pstmt.setLong(6, Long.parseLong(lecture.getId()));
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -78,10 +84,10 @@ public class LectureDAO {
     }
 
     // Delete a record by ID
-    public void deleteLecture(long id) {
+    public void deleteLecture(String id) {
         String sql = "DELETE FROM tblLectures WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -90,7 +96,7 @@ public class LectureDAO {
 
     // Map ResultSet to Lecture object
     private Lecture mapResultSetToLecture(ResultSet rs) throws SQLException {
-        long id = rs.getLong("id");
+        String id = rs.getString("id");
         String name = rs.getString("name");
         String email = rs.getString("email");
         String address = rs.getString("address");

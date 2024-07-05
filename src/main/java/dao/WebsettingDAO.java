@@ -1,7 +1,8 @@
 package dao;
 
-import model.Websetting;
 import dbconnect.DBConnect;
+import model.Websetting;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,10 +38,10 @@ public class WebsettingDAO {
     }
 
     // Delete a Websetting by ID
-    public void delete(long id) {
+    public void delete(String id) {
         String sql = "DELETE FROM tblWebsetting WHERE id = ?";
         try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, id);
+            stmt.setString(1, id);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -58,7 +59,7 @@ public class WebsettingDAO {
             stmt.setLong(5, websetting.getCreatedBy());
             stmt.setString(6, websetting.getStatus());
             stmt.setString(7, websetting.getType());
-            stmt.setLong(8, websetting.getId());
+            stmt.setString(8, websetting.getId());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -72,7 +73,7 @@ public class WebsettingDAO {
         try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 Websetting websetting = new Websetting();
-                websetting.setId(rs.getLong("id"));
+                websetting.setId(rs.getString("id"));
                 websetting.setContent(rs.getString("content"));
                 websetting.setUpdatedBy(rs.getLong("updatedBy"));
                 websetting.setUpdatedDate(rs.getTimestamp("updatedDate")); // Changed to Timestamp
@@ -89,15 +90,15 @@ public class WebsettingDAO {
     }
 
     // Retrieve a Websetting by ID
-    public Websetting getById(long id) {
+    public Websetting getById(String id) {
         Websetting websetting = null;
         String sql = "SELECT * FROM tblWebsetting WHERE id = ?";
         try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, id);
+            stmt.setString(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     websetting = new Websetting();
-                    websetting.setId(rs.getLong("id"));
+                    websetting.setId(rs.getString("id"));
                     websetting.setContent(rs.getString("content"));
                     websetting.setUpdatedBy(rs.getLong("updatedBy"));
                     websetting.setUpdatedDate(rs.getTimestamp("updatedDate")); // Changed to Timestamp

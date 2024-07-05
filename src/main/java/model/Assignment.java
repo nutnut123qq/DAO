@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Assignment implements Comparable<Assignment> {
 
-    private long id;
+    private String id;
     private long idCourse;
     private String title;
     private String description;
@@ -17,7 +17,7 @@ public class Assignment implements Comparable<Assignment> {
     private long createdBy;
 
     // Constructor
-    public Assignment(long id, long idCourse, String title, String description, Timestamp deadline, String fileURL, long updatedBy, Timestamp updatedDate, Timestamp createdDate, long createdBy) {
+    public Assignment(String id, long idCourse, String title, String description, Timestamp deadline, String fileURL, long updatedBy, Timestamp updatedDate, Timestamp createdDate, long createdBy) {
         this.id = id;
         this.idCourse = idCourse;
         this.title = title;
@@ -31,11 +31,11 @@ public class Assignment implements Comparable<Assignment> {
     }
 
     // Getters and Setters
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -117,10 +117,10 @@ public class Assignment implements Comparable<Assignment> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Assignment that = (Assignment) o;
-        return id == that.id &&
-                idCourse == that.idCourse &&
+        return idCourse == that.idCourse &&
                 updatedBy == that.updatedBy &&
                 createdBy == that.createdBy &&
+                Objects.equals(id, that.id) &&
                 Objects.equals(title, that.title) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(deadline, that.deadline) &&

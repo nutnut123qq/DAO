@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Category implements Comparable<Category> {
 
-    private long id;
+    private String id; // Changed from long to String
     private String name;
     private String description;
     private long updatedBy;
@@ -16,7 +16,7 @@ public class Category implements Comparable<Category> {
     private long idCourse;
 
     // Constructor
-    public Category(long id, String name, String description, long updatedBy, Timestamp updatedDate, Timestamp createdDate, long createdBy, String status, long idCourse) {
+    public Category(String id, String name, String description, long updatedBy, Timestamp updatedDate, Timestamp createdDate, long createdBy, String status, long idCourse) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -29,11 +29,11 @@ public class Category implements Comparable<Category> {
     }
 
     // Getters and Setters
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -111,10 +111,10 @@ public class Category implements Comparable<Category> {
             return false;
         }
         Category category = (Category) o;
-        return id == category.id
-                && updatedBy == category.updatedBy
+        return updatedBy == category.updatedBy
                 && createdBy == category.createdBy
                 && idCourse == category.idCourse
+                && Objects.equals(id, category.id)
                 && Objects.equals(name, category.name)
                 && Objects.equals(description, category.description)
                 && Objects.equals(updatedDate, category.updatedDate)

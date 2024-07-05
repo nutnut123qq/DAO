@@ -35,10 +35,10 @@ public class AssignmentDAO {
     }
 
     // Retrieve a record by ID
-    public Assignment getAssignmentById(long id) {
+    public Assignment getAssignmentById(String id) {
         String sql = "SELECT * FROM tblAssignments WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 return mapResultSetToAssignment(rs);
@@ -77,7 +77,7 @@ public class AssignmentDAO {
             pstmt.setTimestamp(7, assignment.getUpdatedDate());
             pstmt.setTimestamp(8, assignment.getCreatedDate());
             pstmt.setLong(9, assignment.getCreatedBy());
-            pstmt.setLong(10, assignment.getId());
+            pstmt.setString(10, assignment.getId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -85,10 +85,10 @@ public class AssignmentDAO {
     }
 
     // Delete a record by ID
-    public void deleteAssignment(long id) {
+    public void deleteAssignment(String id) {
         String sql = "DELETE FROM tblAssignments WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -97,7 +97,7 @@ public class AssignmentDAO {
 
     // Map ResultSet to Assignment object
     private Assignment mapResultSetToAssignment(ResultSet rs) throws SQLException {
-        long id = rs.getLong("id");
+        String id = rs.getString("id");
         long idCourse = rs.getLong("id_course");
         String title = rs.getString("title");
         String description = rs.getString("description");

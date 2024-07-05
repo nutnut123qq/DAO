@@ -29,7 +29,7 @@ public class DetailInvoiceDAO {
             // Retrieve the generated ID
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                detailInvoice.setId(generatedKeys.getLong(1));
+                detailInvoice.setId(String.valueOf(generatedKeys.getLong(1)));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -37,10 +37,10 @@ public class DetailInvoiceDAO {
     }
 
     // Retrieve a record by ID
-    public DetailInvoice getDetailInvoiceById(long id) {
+    public DetailInvoice getDetailInvoiceById(String id) {
         String sql = "SELECT * FROM tblDetailInvoices WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setLong(1, Long.parseLong(id));
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 return mapResultSetToDetailInvoice(rs);
@@ -73,7 +73,7 @@ public class DetailInvoiceDAO {
             pstmt.setLong(1, detailInvoice.getInvoiceId());
             pstmt.setLong(2, detailInvoice.getCourseId());
             pstmt.setInt(3, detailInvoice.getQuantityPurchased());
-            pstmt.setLong(4, detailInvoice.getId());
+            pstmt.setLong(4, Long.parseLong(detailInvoice.getId()));
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -82,10 +82,10 @@ public class DetailInvoiceDAO {
     }
 
     // Delete a record by ID
-    public void deleteDetailInvoice(long id) {
+    public void deleteDetailInvoice(String id) {
         String sql = "DELETE FROM tblDetailInvoices WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setLong(1, Long.parseLong(id));
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -94,7 +94,7 @@ public class DetailInvoiceDAO {
 
     // Map ResultSet to DetailInvoice object
     private DetailInvoice mapResultSetToDetailInvoice(ResultSet rs) throws SQLException {
-        long id = rs.getLong("id");
+        String id = rs.getString("id");
         long invoiceId = rs.getLong("invoiceId");
         long courseId = rs.getLong("courseId");
         int quantityPurchased = rs.getInt("quantityPurchased");

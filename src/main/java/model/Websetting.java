@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Websetting implements Comparable<Websetting> {
 
-    private long id;
+    private String id;
     private String content;
     private long updatedBy;
     private Timestamp updatedDate;
@@ -18,7 +18,7 @@ public class Websetting implements Comparable<Websetting> {
     public Websetting() {
     }
 
-    public Websetting(long id, String content, long updatedBy, Timestamp updatedDate, Timestamp createdDate, long createdBy, String status, String type) {
+    public Websetting(String id, String content, long updatedBy, Timestamp updatedDate, Timestamp createdDate, long createdBy, String status, String type) {
         this.id = id;
         this.content = content;
         this.updatedBy = updatedBy;
@@ -29,11 +29,11 @@ public class Websetting implements Comparable<Websetting> {
         this.type = type;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -89,7 +89,6 @@ public class Websetting implements Comparable<Websetting> {
         return type;
     }
 
-    // Getters and Setters (omitted for brevity)
     public void setType(String type) {
         this.type = type;
     }
@@ -104,7 +103,7 @@ public class Websetting implements Comparable<Websetting> {
             return false;
         }
         Websetting that = (Websetting) o;
-        return id == that.id
+        return Objects.equals(id, that.id)
                 && updatedBy == that.updatedBy
                 && createdBy == that.createdBy
                 && Objects.equals(content, that.content)

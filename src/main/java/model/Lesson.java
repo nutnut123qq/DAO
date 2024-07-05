@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Lesson implements Comparable<Lesson> {
 
-    private long id;
+    private String id; // Chuyển từ long sang String
     private String nameLesson;
     private long courseId;
     private Timestamp createdDate;
@@ -13,11 +13,11 @@ public class Lesson implements Comparable<Lesson> {
     private long createdBy;
     private long updatedBy;
     private String content;
-    private long lessonId; // Foreign key referencing itself
+    private String lessonId; // Chuyển từ long sang String
     private java.sql.Time timeLesson; // Using java.sql.Time for time_lesson
 
     // Constructor
-    public Lesson(long id, String nameLesson, long courseId, Timestamp createdDate, Timestamp updatedDate, long createdBy, long updatedBy, String content, long lessonId, java.sql.Time timeLesson) {
+    public Lesson(String id, String nameLesson, long courseId, Timestamp createdDate, Timestamp updatedDate, long createdBy, long updatedBy, String content, String lessonId, java.sql.Time timeLesson) {
         this.id = id;
         this.nameLesson = nameLesson;
         this.courseId = courseId;
@@ -31,11 +31,11 @@ public class Lesson implements Comparable<Lesson> {
     }
 
     // Getters and Setters
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -95,11 +95,11 @@ public class Lesson implements Comparable<Lesson> {
         this.content = content;
     }
 
-    public long getLessonId() {
+    public String getLessonId() {
         return lessonId;
     }
 
-    public void setLessonId(long lessonId) {
+    public void setLessonId(String lessonId) {
         this.lessonId = lessonId;
     }
 
@@ -117,7 +117,7 @@ public class Lesson implements Comparable<Lesson> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Lesson lesson = (Lesson) o;
-        return id == lesson.id &&
+        return Objects.equals(id, lesson.id) &&
                 courseId == lesson.courseId &&
                 createdBy == lesson.createdBy &&
                 updatedBy == lesson.updatedBy &&
@@ -139,6 +139,6 @@ public class Lesson implements Comparable<Lesson> {
     @Override
     public int compareTo(Lesson o) {
         // Compare by id
-        return Long.compare(this.id, o.id);
+        return this.id.compareTo(o.id);
     }
 }

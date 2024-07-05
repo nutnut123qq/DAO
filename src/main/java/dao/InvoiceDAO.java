@@ -29,7 +29,7 @@ public class InvoiceDAO {
             // Retrieve the generated ID
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                invoice.setId(generatedKeys.getLong(1));
+                invoice.setId(generatedKeys.getString(1));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -37,10 +37,10 @@ public class InvoiceDAO {
     }
 
     // Retrieve a record by ID
-    public Invoice getInvoiceById(long id) {
+    public Invoice getInvoiceById(String id) {
         String sql = "SELECT * FROM tblInvoices WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 return mapResultSetToInvoice(rs);
@@ -73,7 +73,7 @@ public class InvoiceDAO {
             pstmt.setTimestamp(1, invoice.getPurchDate());
             pstmt.setLong(2, invoice.getUserId());
             pstmt.setBoolean(3, invoice.isOrderStatus());
-            pstmt.setLong(4, invoice.getId());
+            pstmt.setString(4, invoice.getId());
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -82,10 +82,10 @@ public class InvoiceDAO {
     }
 
     // Delete a record by ID
-    public void deleteInvoice(long id) {
+    public void deleteInvoice(String id) {
         String sql = "DELETE FROM tblInvoices WHERE id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setLong(1, id);
+            pstmt.setString(1, id);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -94,7 +94,7 @@ public class InvoiceDAO {
 
     // Map ResultSet to Invoice object
     private Invoice mapResultSetToInvoice(ResultSet rs) throws SQLException {
-        long id = rs.getLong("id");
+        String id = rs.getString("id");
         Timestamp purchDate = rs.getTimestamp("purchDate");
         long userId = rs.getLong("userId");
         boolean orderStatus = rs.getBoolean("orderStatus");

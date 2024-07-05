@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Messages implements Comparable<Messages> {
 
-    private long id;
+    private String id;
     private String subject;
     private String email;
     private String description;
@@ -16,7 +16,7 @@ public class Messages implements Comparable<Messages> {
     private String message;
 
     // Constructor
-    public Messages(long id, String subject, String email, String description, long updatedBy, Timestamp updatedDate, Timestamp createdDate, long createdBy, String message) {
+    public Messages(String id, String subject, String email, String description, long updatedBy, Timestamp updatedDate, Timestamp createdDate, long createdBy, String message) {
         this.id = id;
         this.subject = subject;
         this.email = email;
@@ -29,11 +29,11 @@ public class Messages implements Comparable<Messages> {
     }
 
     // Getters and Setters
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -111,7 +111,7 @@ public class Messages implements Comparable<Messages> {
             return false;
         }
         Messages messages = (Messages) o;
-        return id == messages.id
+        return Objects.equals(id, messages.id)
                 && updatedBy == messages.updatedBy
                 && createdBy == messages.createdBy
                 && Objects.equals(subject, messages.subject)

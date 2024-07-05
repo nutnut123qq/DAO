@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class History implements Comparable<History> {
 
-    private long id;
+    private String id; // Thay đổi kiểu dữ liệu từ long sang String
     private String ipAddress;
     private Timestamp updatedDate;
     private Timestamp createdDate;
@@ -17,7 +17,7 @@ public class History implements Comparable<History> {
     }
 
     // Parameterized constructor
-    public History(long id, String ipAddress, Timestamp updatedDate, Timestamp createdDate, String type, int mappingId) {
+    public History(String id, String ipAddress, Timestamp updatedDate, Timestamp createdDate, String type, int mappingId) {
         this.id = id;
         this.ipAddress = ipAddress;
         this.updatedDate = updatedDate;
@@ -27,11 +27,11 @@ public class History implements Comparable<History> {
     }
 
     // Getters and Setters
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -77,32 +77,28 @@ public class History implements Comparable<History> {
 
     @Override
     public String toString() {
-        return "TblHistory{"
-                + "id=" + id
-                + ", ipAddress='" + ipAddress + '\''
-                + ", updatedDate=" + updatedDate
-                + ", createdDate=" + createdDate
-                + ", type='" + type + '\''
-                + ", mappingId=" + mappingId
-                + '}';
+        return "History{" +
+                "id='" + id + '\'' +
+                ", ipAddress='" + ipAddress + '\'' +
+                ", updatedDate=" + updatedDate +
+                ", createdDate=" + createdDate +
+                ", type='" + type + '\'' +
+                ", mappingId=" + mappingId +
+                '}';
     }
 
     // equals method
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         History history = (History) o;
-        return id == history.id
-                && mappingId == history.mappingId
-                && Objects.equals(ipAddress, history.ipAddress)
-                && Objects.equals(updatedDate, history.updatedDate)
-                && Objects.equals(createdDate, history.createdDate)
-                && Objects.equals(type, history.type);
+        return mappingId == history.mappingId &&
+                Objects.equals(id, history.id) &&
+                Objects.equals(ipAddress, history.ipAddress) &&
+                Objects.equals(updatedDate, history.updatedDate) &&
+                Objects.equals(createdDate, history.createdDate) &&
+                Objects.equals(type, history.type);
     }
 
     // hashCode method
