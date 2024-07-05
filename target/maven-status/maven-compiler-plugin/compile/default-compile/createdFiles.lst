@@ -1,0 +1,4 @@
+model\Websetting.class
+database\DBConnect.class
+dao\WebsettingDAO.class
+com\mycompany\mavenproject2\Main.class
